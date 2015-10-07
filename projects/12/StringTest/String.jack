@@ -1,0 +1,78 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/String.jack
+
+/**
+ * Represents a String object. Implements the String type.
+ */
+class String {
+    field Array str;
+    field int maxLen, len; 
+
+    /** Constructs a new empty String with a maximum length of maxLength. 
+    for reference: http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/String-class-issues-td4027591.html */
+    constructor String new(int maxLength) {
+        let str = Array.new(maxLength);
+
+        return this;
+    }
+
+    /** De-allocates the string and frees its space. */
+    method void dispose() {
+        if(~(str = null)){
+            do str.dispose();
+        }
+
+        do Memory.deAlloc(this);
+
+        return;
+    }
+
+    /** Returns the current length of this String. */
+    method int length() {
+        return len;
+    }
+
+    /** Returns the character at location j. */
+    method char charAt(int j) {
+        return str[j];
+    }
+
+    /** Sets the j'th character of this string to be c. */
+    method void setCharAt(int j, char c) {
+        let str[j] = c;
+
+        return;
+    }
+
+    /** Appends the character c to the end of this String.
+     *  Returns this string as the return value. */
+    method String appendChar(char c) {
+        if(len < maxLen){
+            let len = len + 1;
+        }else{
+            do Sys.error(17);
+        }
+
+        return this;
+    }
+
+    /** Erases the last character from this String. */
+    method void eraseLastChar() {
+        if(len > 0){
+            let len = len - 1;
+        }else{
+            do Sys.error(17);
+        }
+
+        return;
+    }
+
+    /** Returns the integer value of this String until the first non
+     *  numeric character. */
+    method int intValue() {
+        
+    }
+
+}
