@@ -31,14 +31,28 @@ push argument 0
 pop pointer 0
 push this 2
 return
-function String.charAt 0
+function String.charAt 1
 push argument 0
 pop pointer 0
+push argument 1
+push this 2
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push argument 1
 push this 0
 add
 pop pointer 1
 push that 0
+pop local 0
+goto IF_END0
+label IF_FALSE0
+push constant 15
+call Sys.error 1
+pop temp 0
+label IF_END0
+push local 0
 return
 function String.setCharAt 0
 push argument 0
@@ -94,4 +108,43 @@ call Sys.error 1
 pop temp 0
 label IF_END0
 push constant 0
+return
+function String.intValue 2
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END0
+push local 0
+push constant 10
+call Math.multiply 2
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function String.setInt 1
+push argument 0
+pop pointer 0
+push argument 1
+pop local 0
+push constant 0
+return
+function String.newLine 0
+push constant 128
+return
+function String.backSpace 0
+push constant 129
+return
+function String.doubleQuote 0
+push constant 34
 return
