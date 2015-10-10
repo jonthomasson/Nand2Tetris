@@ -69,6 +69,12 @@ function String.setCharAt 0
 push argument 0
 pop pointer 0
 push argument 1
+push this 2
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
 push this 0
 add
 push argument 2
@@ -76,6 +82,12 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
+goto IF_END0
+label IF_FALSE0
+push constant 17
+call Sys.error 1
+pop temp 0
+label IF_END0
 push constant 0
 return
 function String.appendChar 0
@@ -151,13 +163,81 @@ goto WHILE_EXP0
 label WHILE_END0
 push local 0
 return
-function String.setInt 1
+function String.int2String 3
 push argument 0
 pop pointer 0
 push argument 1
 pop local 0
+push local 0
+push constant 10
+push local 0
+push constant 10
+call Math.divide 2
+call Math.multiply 2
+sub
+pop local 1
+push constant 48
+push local 1
+add
+pop local 2
+push local 0
+push constant 10
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 2
+call String.appendChar 2
+pop temp 0
 push constant 0
 return
+goto IF_END0
+label IF_FALSE0
+push pointer 0
+push local 0
+push constant 10
+call Math.divide 2
+call String.setInt 2
+pop temp 0
+push pointer 0
+push local 2
+call String.appendChar 2
+pop temp 0
+push constant 0
+return
+label IF_END0
+function String.setInt 0
+push argument 0
+pop pointer 0
+push constant 0
+pop this 2
+push argument 1
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push constant 45
+call String.appendChar 2
+pop temp 0
+push pointer 0
+push argument 1
+neg
+call String.int2String 2
+pop temp 0
+push constant 0
+return
+goto IF_END0
+label IF_FALSE0
+push pointer 0
+push argument 1
+call String.int2String 2
+pop temp 0
+push constant 0
+return
+label IF_END0
 function String.newLine 0
 push constant 128
 return
