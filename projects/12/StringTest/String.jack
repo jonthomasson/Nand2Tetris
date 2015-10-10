@@ -92,8 +92,14 @@ class String {
     method int intValue() {
         var int v;
         var int i;
+
+        let i = 0;
         while(i < len){
-            let v = v * 10 + str[i];
+            var int d;
+
+            let d = str[i];
+            let v = v * 10 + d;
+            let i = i + 1;
         }
 
         return v;
