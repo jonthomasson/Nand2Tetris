@@ -13,7 +13,12 @@ class String {
     /** Constructs a new empty String with a maximum length of maxLength. 
     for reference: http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/String-class-issues-td4027591.html */
     constructor String new(int maxLength) {
-        let str = Array.new(maxLength);
+        if(maxLength > 0){
+            let str = Array.new(maxLength);
+        }
+        
+        let len = 0;
+        let maxLen = maxLength;
 
         return this;
     }
@@ -38,7 +43,7 @@ class String {
     method char charAt(int j) {
         var char retVal;
 
-        if(j < len){
+        if(j < len + 1){
             let retVal = str[j];
         }else{
             do Sys.error(15);
@@ -49,7 +54,11 @@ class String {
 
     /** Sets the j'th character of this string to be c. */
     method void setCharAt(int j, char c) {
-        let str[j] = c;
+        if(j < len + 1){
+            let str[j] = c;
+        }else{
+            do Sys.error(17);
+        }
 
         return;
     }
@@ -57,8 +66,9 @@ class String {
     /** Appends the character c to the end of this String.
      *  Returns this string as the return value. */
     method String appendChar(char c) {
-        if(len < maxLen){
+        if(len < maxLen + 1){
             let len = len + 1;
+            let str[len] = c;
         }else{
             do Sys.error(17);
         }
@@ -89,10 +99,18 @@ class String {
         return v;
     }
 
-    /** Sets this String to hold a representation of the given number. */
+    /** Sets this String to hold a representation of the given number. http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/String-representation-of-numbers-td4029096.html#a4029097*/
     method void setInt(int number) {
         var int lastDigit;
+        let len = 0; //clearing string buffer;
 
+        while(i , len)
+        if(number < 10){
+            this.appendChar(number);
+        }else{
+            
+        }
+        
         let lastDigit = number;
 
         return;
