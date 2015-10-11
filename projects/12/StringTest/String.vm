@@ -140,25 +140,31 @@ pop temp 0
 label IF_END0
 push constant 0
 return
-function String.intValue 2
+function String.intValue 3
 push argument 0
 pop pointer 0
-push constant 0
+push constant 1
 pop local 1
+push constant 0
+pop local 0
 label WHILE_EXP0
 push local 1
 push this 2
 lt
 not
 if-goto WHILE_END0
-push local 0
-push constant 10
-call Math.multiply 2
 push local 1
 push this 0
 add
 pop pointer 1
 push that 0
+push constant 48
+sub
+pop local 2
+push local 0
+push constant 10
+call Math.multiply 2
+push local 2
 add
 pop local 0
 push local 1
