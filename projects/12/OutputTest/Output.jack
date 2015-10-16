@@ -20,6 +20,8 @@ class Output {
     function void init() {
         let cursorColumn = 0;
         let cursorRow = 0;
+
+        return;
     }
 
     // Initalizes the character map array
@@ -178,16 +180,47 @@ class Output {
         let cursorRow = i;
 
         do Output.printChar(32);
+
+        return;
     }
 
     /** Prints c at the cursor location and advances the cursor one
      *  column forward. */
     function void printChar(char c) {
+        //get charMap for c
+        var Array map;
+        var int row,column;
+
+        let row = 0;
+        let column = 0;
+        let map = Output.getMap(c);
+
+        //iterate through map and draw pixels on screen
+        while(row < 12){ //11 rows
+            while(column < 9){ //8 columns
+                do Screen.drawPixel(column + cursorColumn,row + cursorRow);
+            }
+        }
+
+        //move cursorColumn one column forward...
+        let cursorColumn = cursorColumn + 1;
+        do Output.moveCursor(cursorRow, cursorColumn);
+
+        return;
     }
 
     /** Prints s starting at the cursor location, and advances the
      *  cursor appropriately. */
     function void printString(String s) {
+        var int i;
+
+        let i = 0;
+
+        while(i < s.length()){
+            do Output.printChar(s[i]);
+        }
+
+        return;
     }
 
     /** Prints i starting at the cursor location, and advances the
@@ -196,15 +229,27 @@ class Output {
         var String s ;                                                           
         let  s = String.new(8);                                                 
         do s.setInt(i);                                                         
-        do Output.printString(s);                                               
+        do Output.printString(s);                     
+
         return;     
     }
 
     /** Advances the cursor to the beginning of the next line. */
     function void println() {
+        let cursorRow = cursorRow + 1;
+        let cursorColumn = 0;
+
+        do Output.moveCursor(cursorRow, cursorColumn);
+
+        return;
     }
 
     /** Moves the cursor one column back. */
     function void backSpace() {
+        let cursorColumn = cursorColumn - 1;
+
+        do Output.moveCursor(cursorRow, cursorColumn);
+
+        return;
     }
 }
