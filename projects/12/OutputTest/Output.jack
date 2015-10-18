@@ -187,7 +187,7 @@ class Output {
     }
 
     /** Prints c at the cursor location and advances the cursor one
-     *  column forward. */
+     *  column forward.http://nand2tetris-questions-and-answers-forum.32033.n3.nabble.com/Math-jack-running-too-slow-td4029121.html#a4029123 */
     function void printChar(char c) {
         //get charMap for c
         var Array map;

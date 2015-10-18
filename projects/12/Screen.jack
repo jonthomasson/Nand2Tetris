@@ -7,9 +7,11 @@
  * Graphic screen library.
  */
 class Screen {
+    static boolean color;
 
     /** Initializes the Screen. */
     function void init() {
+        let color = true;
     }
 
     /** Erases the whole screen. */
@@ -19,6 +21,7 @@ class Screen {
     /** Sets the color to be used in further draw commands
      *  where white = false, black = true. */
     function void setColor(boolean b) {
+        let color = b;
     }
 
     /** Draws the (x, y) pixel. */
