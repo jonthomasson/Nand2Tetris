@@ -3,6 +3,32 @@ push constant 0
 pop static 1
 push constant 0
 pop static 2
+push constant 16384
+pop static 3
+push constant 2
+call Array.new 1
+pop static 4
+push constant 0
+push static 4
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push static 4
+add
+push constant 1
+neg
+push constant 255
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+call Output.initMap 0
+pop temp 0
 push constant 0
 return
 function Output.initMap 1
@@ -1479,26 +1505,31 @@ push that 0
 return
 function Output.moveCursor 0
 push argument 1
-push constant 7
-call Math.multiply 2
 pop static 1
 push argument 0
-push constant 11
-call Math.multiply 2
 pop static 2
-push constant 32
-call Output.printChar 1
-pop temp 0
 push constant 0
 return
-function Output.printChar 3
+function Output.printChar 6
 push constant 0
 pop local 1
-push constant 0
-pop local 2
 push argument 0
 call Output.getMap 1
 pop local 0
+push static 2
+push constant 32
+call Math.multiply 2
+push constant 11
+call Math.multiply 2
+push static 1
+push constant 2
+call Math.divide 2
+add
+pop local 4
+push static 2
+push constant 1
+and
+pop local 5
 label WHILE_EXP0
 push local 1
 push constant 11
@@ -1506,41 +1537,67 @@ lt
 not
 if-goto WHILE_END0
 push local 1
+push local 0
+add
+pop pointer 1
+push that 0
+pop local 2
+push local 5
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 2
+push constant 256
+call Math.multiply 2
+pop local 2
+label IF_FALSE0
+push local 4
+push static 3
+add
+push local 4
+push static 3
+add
+pop pointer 1
+push that 0
+push local 5
+push static 4
+add
+pop pointer 1
+push that 0
+and
+push local 2
+or
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 4
+push constant 32
+add
+pop local 4
+push local 1
 push constant 1
 add
 pop local 1
-label WHILE_EXP1
-push local 2
-push constant 8
-lt
-not
-if-goto WHILE_END1
-push local 2
-push constant 1
-add
-pop local 2
-push local 2
-push static 1
-add
-push local 1
-push static 2
-add
-call Screen.drawPixel 2
-pop temp 0
-goto WHILE_EXP1
-label WHILE_END1
-push constant 0
-pop local 2
 goto WHILE_EXP0
 label WHILE_END0
+push static 1
+push constant 63
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call Output.println 0
+pop temp 0
+goto IF_END1
+label IF_FALSE1
 push static 1
 push constant 1
 add
 pop static 1
-push static 2
-push static 1
-call Output.moveCursor 2
-pop temp 0
+label IF_END1
 push constant 0
 return
 function Output.printString 1
@@ -1560,12 +1617,16 @@ pop pointer 1
 push that 0
 call Output.printChar 1
 pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0
 return
 function Output.printInt 1
-push constant 8
+push constant 10
 call String.new 1
 pop local 0
 push local 0
@@ -1575,29 +1636,58 @@ pop temp 0
 push local 0
 call Output.printString 1
 pop temp 0
+push local 0
+call String.dispose 1
+pop temp 0
 push constant 0
 return
 function Output.println 0
+push constant 0
+pop static 1
+push static 2
+push constant 22
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push static 2
 push constant 1
 add
 pop static 2
+goto IF_END0
+label IF_FALSE0
 push constant 0
-pop static 1
-push static 2
-push static 1
-call Output.moveCursor 2
-pop temp 0
+pop static 2
+label IF_END0
 push constant 0
 return
 function Output.backSpace 0
 push static 1
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push static 2
+push constant 0
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 63
+pop static 2
+push static 1
 push constant 1
 sub
 pop static 1
-push static 2
+label IF_FALSE1
+goto IF_END0
+label IF_FALSE0
 push static 1
-call Output.moveCursor 2
-pop temp 0
+push constant 1
+sub
+pop static 1
+label IF_END0
 push constant 0
 return

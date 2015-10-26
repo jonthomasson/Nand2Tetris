@@ -15,11 +15,19 @@ class Output {
     // Character map for printing on the left of a screen word
     static Array charMaps; 
     static int cursorColumn, cursorRow;
+    static Array screen;
+    static Array charMasks;
 
     /** Initializes the screen and locates the cursor at the screen's top-left. */
     function void init() {
         let cursorColumn = 0;
         let cursorRow = 0;
+        
+        let screen = 16384;
+       
+        let charMasks = Array.new(2);
+        let charMasks[0] = 255;
+        let charMasks[1] = -1 & 255;
 
         do Output.initMap();
 
@@ -167,7 +175,7 @@ class Output {
     // Returns the character map (array of size 11) for the given character
     // If an invalid character is given, returns the character map of a black square.
     function Array getMap(char c) {
-        
+        //let c = 66;
         if ((c < 32) | (c > 126)) {
             let c = 0;
         }
@@ -175,13 +183,13 @@ class Output {
         return charMaps[c];
     }
 
-    /** Moves the cursor to the j’th column of the i’th row,
+    /** Moves the cursor to the jï¿½th column of the iï¿½th row,
      *  and erases the character that was there. */
     function void moveCursor(int i, int j) {
-        let cursorColumn = Math.multiply(j,7);
-        let cursorRow = Math.multiply(i,11);
+        let cursorColumn = j;
+        let cursorRow = i;
 
-        do Output.printChar(32);
+        //do Output.printChar(32);
 
         return;
     }
@@ -191,28 +199,39 @@ class Output {
     function void printChar(char c) {
         //get charMap for c
         var Array map;
-        var int row,column;
-
+        var int row,current,y;
+        var int address;
+        var int mask;
+        
         let row = 0;
-        let column = 0;
+       
         let map = Output.getMap(c);
-
+        let address = (cursorRow*32*11) + (cursorColumn/2);
+        let mask = cursorRow & 1;
+        
         //iterate through map and draw pixels on screen
 
-        while(row < 11){ //11 rows
-            let row = row + 1;
-
-            while(column < 8){ //8 columns
-                let column = column + 1;
-                do Screen.drawPixel(column + cursorColumn,row + cursorRow);
+        while(row < 11){
+            let current = map[row];
+            
+            if( mask = 1 ) {
+                let current = current * 256;
             }
-
-            let column = 0;
+            let screen[address] = screen[address] & charMasks[mask] | current;
+            let address = address + 32;
+            
+            let row = row + 1;
+           
         }
+ 
 
         //move cursorColumn one column forward...
-        //let cursorColumn = cursorColumn + 1;
-        //do Output.moveCursor(cursorRow, cursorColumn);
+        if( cursorColumn = 63 ) {
+            do Output.println();
+        }
+        else {
+            let cursorColumn = cursorColumn + 1;
+        }
 
         return;
     }
@@ -226,6 +245,7 @@ class Output {
 
         while(i < s.length()){
             do Output.printChar(s[i]);
+            let i = i + 1;
         }
 
         return;
@@ -235,28 +255,38 @@ class Output {
      *  cursor appropriately. */
     function void printInt(int i) {
         var String s ;                                                           
-        let  s = String.new(8);                                                 
+        let  s = String.new(10);                                                 
         do s.setInt(i);                                                         
         do Output.printString(s);                     
-
+        do s.dispose();
+        
         return;     
     }
 
     /** Advances the cursor to the beginning of the next line. */
     function void println() {
-        let cursorRow = cursorRow + 1;
         let cursorColumn = 0;
-
-        do Output.moveCursor(cursorRow, cursorColumn);
+        if(cursorRow < 22){
+            let cursorRow = cursorRow + 1;
+        }
+        else{
+            let cursorRow = 0;
+        }
 
         return;
     }
 
     /** Moves the cursor one column back. */
     function void backSpace() {
-        let cursorColumn = cursorColumn - 1;
-
-        do Output.moveCursor(cursorRow, cursorColumn);
+        if(cursorColumn = 0){
+            if(~(cursorRow = 0)){
+                let cursorRow = 63;
+                let cursorColumn = cursorColumn - 1;
+            }
+        }
+        else{
+            let cursorColumn = cursorColumn - 1;
+        }
 
         return;
     }
