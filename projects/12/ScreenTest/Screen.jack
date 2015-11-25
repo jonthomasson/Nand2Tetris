@@ -84,6 +84,10 @@ class Screen {
             do Sys.error(8); // Screen.drawLine: Illegal line coordinates
         }
         
+        //handle horizontal and vertical lines first
+        
+        
+        
         while((a < x2) & (b < y2)){
            do Screen.drawPixel(x1 + a, y1 + b);
            
