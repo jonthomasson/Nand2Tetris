@@ -75,9 +75,11 @@ class Screen {
 
     /** Draws a line from (x1, y1) to (x2, y2). page 258 in book.*/
     function void drawLine(int x1, int y1, int x2, int y2) {
-        var int a, b;
+        var int a, b, diffx, diffy;
         let a = 0;
         let b = 0;
+        let diffy = y2 - y1;
+        let diffx = x2 - x1;
         
         if ((x1 < 0) | (x1 > 511) | (y1 < 0) | (y1 > 255) |
         (x2 < 0) | (x2 > 511) | (y2 < 0) | (y2 > 255)) {
@@ -86,26 +88,73 @@ class Screen {
         
         //handle horizontal and vertical lines first
         if(y1 - y2 = 0){ //horizontal line
-            while(a < x2){
-                do Screen.drawPixel(x1 + a, y1 + b);
+            if(diffx > 0){
+                while(a < diffx){
+                    do Screen.drawPixel(x1 + a, y1);
                 
-                let a = a + 1;
-            } 
-            
+                    let a = a + 1;
+                }             
+            }else{
+                while(a > diffx){
+                    do Screen.drawPixel(x1 + a, y1);
+                
+                    let a = a - 1;
+                }              
+            }
+
             return;
         }
         
         if(x1 - x2 = 0){ //vertical line
-            while(b < y2){
-                do Screen.drawPixel(x1 + a, y1 + b);
+            if(diffy > 0){
+                while(b < diffy){
+                    do Screen.drawPixel(x1, y1 + b);
                 
-                let b = b + 1;
-            } 
+                    let b = b + 1;
+                } 
+            }else{
+                 while(b > diffy){
+                    do Screen.drawPixel(x1, y1 + b);
+                
+                    let b = b - 1;
+                }            
+            }
             
             return;
         }
         
         
+        
+        //diagonal lines
+        if((diffx < 0) & (diffy > 0)){
+            while((a < x2) & (b < y2)){
+                do Screen.drawPixel(x1 + a, y1 + b);
+           
+                if((a * y2) < (b * x2)){
+                    let a = a + 1;
+                }else{
+                    let b = b + 1;
+                }
+            }
+            return;            
+        }
+        
+        if((diffx > 0) & (diffy < 0)){
+            while((a < x2) & (b < y2)){
+                do Screen.drawPixel(x1 + a, y1 + b);
+                
+                let diffx = x2 - (x1 + a);
+                let diffy = y2 - (y1 + b);
+                
+           
+                if((a * diffy) < (b * diffx)){
+                    let a = a + 1;
+                }else{
+                    let b = b + 1;
+                }
+            }
+            return;               
+        }
         
         
         while((a < x2) & (b < y2)){
@@ -123,7 +172,12 @@ class Screen {
     /** Draws a filled rectangle where the top left corner
      *  is (x1, y1) and the bottom right corner is (x2, y2).  */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
+        //draw the four sides of the rectangle using drawLine
         
+        do Screen.drawLine(x1, y1, x2, y1);
+        do Screen.drawLine(x2, y1, x2, y2);
+        do Screen.drawLine(x2, y2, x1, y2);
+        do Screen.drawLine(x1, y2, x1, y1);
         
         return;
     }
