@@ -75,7 +75,8 @@ class Screen {
 
     /** Draws a line from (x1, y1) to (x2, y2). page 258 in book.*/
     function void drawLine(int x1, int y1, int x2, int y2) {
-        var int a, b, diffx, diffy;
+        var int a, b, diffx, diffy, adyMinusbdx;
+        let adyMinusbdx = 0;
         let a = 0;
         let b = 0;
         let diffy = y2 - y1;
@@ -140,17 +141,25 @@ class Screen {
         }
         
         if((diffx > 0) & (diffy < 0)){
-            while((a < x2) & (b < y2)){
+            let adyMinusbdx = 0;
+            
+            while((a < diffx) & (b > diffy)){
                 do Screen.drawPixel(x1 + a, y1 + b);
                 
-                let diffx = x2 - (x1 + a);
-                let diffy = y2 - (y1 + b);
+                //let diffx = x2 - (x1 + a);
+                //let diffy = y2 - (y1 + b);
                 
-           
-                if((a * diffy) < (b * diffx)){
+                //need to figure out if it's above or below
+                //the optimal line
+                                
+                
+                if(adyMinusbdx < 0){
                     let a = a + 1;
+                    let adyMinusbdx = adyMinusbdx + diffy;
                 }else{
-                    let b = b + 1;
+                    let b = b - 1;
+                    let adyMinusbdx = adyMinusbdx - diffx;
+                    
                 }
             }
             return;               
@@ -174,16 +183,35 @@ class Screen {
     function void drawRectangle(int x1, int y1, int x2, int y2) {
         //draw the four sides of the rectangle using drawLine
         
-        do Screen.drawLine(x1, y1, x2, y1);
-        do Screen.drawLine(x2, y1, x2, y2);
-        do Screen.drawLine(x2, y2, x1, y2);
-        do Screen.drawLine(x1, y2, x1, y1);
+        //do Screen.drawLine(x1, y1, x2, y1);
+        //do Screen.drawLine(x2, y1, x2, y2);
+        //do Screen.drawLine(x2, y2, x1, y2);
+        //do Screen.drawLine(x1, y2, x1, y1);
         
+        while (~(y1 = y2)) {
+        do Screen.drawLine(x1, y1, x2, y1);
+        let y1 = y1 + 1;
+      }
+
+    
         return;
     }
 
     /** Draws a filled circle of radius r around (cx, cy). */
     function void drawCircle(int cx, int cy, int r) {
+       var int dx, dy;
+        var int r_squared;
+        
+        let dy = -r;
+        let r_squared = r*r;
+        while( ~(dy > r) ) {
+            let dx = Math.sqrt(r_squared-(dy*dy));
+            
+            do Screen.drawLine(cx-dx, cy+dy, cx+dx, cy+dy); 
+            
+            let dy = dy + 1;
+        }
+        
         return;
     }
 }
